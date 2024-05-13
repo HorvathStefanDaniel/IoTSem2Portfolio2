@@ -20,7 +20,8 @@
         "mqtt_manager.h": "c",
         "cstdlib": "c",
         "semphr.h": "c",
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "sdkconfig.h": "c"
     },
     "idf.flashType": "UART"
 }

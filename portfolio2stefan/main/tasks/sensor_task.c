@@ -38,7 +38,7 @@ void temperature_sensor_publish_task(void *pvParameters) {
 
     
     ESP_LOGI(TAG, "Starting temperature sensor task");
-    const char *topic = MQTT_RESPONSE_TOPIC;
+    const char *topic = CONFIG_MQTT_RESPONSE_TOPIC;
     
 
     //use the struct in the config file to get the parameters

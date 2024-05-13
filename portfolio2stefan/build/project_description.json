@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "portfolio2stefan",
-    "project_version":    "0456937-dirty",
+    "project_version":    "1c4d32a-dirty",
     "project_path":       "C:/Dev/IoTSem2Portfolio2/portfolio2stefan",
     "idf_path":           "C:/Espressif/frameworks/esp-idf-v5.2.1",
     "build_dir":          "C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build",

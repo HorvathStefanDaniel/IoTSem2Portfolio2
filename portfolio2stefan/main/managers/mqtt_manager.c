@@ -4,6 +4,8 @@
 #include "tasks/sensor_task.h"
 #include <cJSON.h>
 #include "esp_timer.h"
+#include <string.h>
+
 
 static const char *TAG = "mqtt_manager";
 static esp_mqtt_client_handle_t mqtt_client = NULL;
@@ -14,7 +16,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t event_base, 
         case MQTT_EVENT_CONNECTED:
             ESP_LOGI(TAG, "MQTT Connected");
             //subscribe to topics
-            esp_mqtt_client_subscribe(event->client, MQTT_COMMAND_TOPIC, 0);
+            esp_mqtt_client_subscribe(event->client, CONFIG_MQTT_COMMAND_TOPIC, 0);
             break;
         case MQTT_EVENT_DISCONNECTED:
             ESP_LOGI(TAG, "MQTT Disconnected");
@@ -58,10 +60,11 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t event_base, 
 
 void mqtt_app_start(void) {
     const esp_mqtt_client_config_t mqtt_cfg = {
-        .broker.address.uri = MQTT_BROKER,
-        .credentials.username = MQTT_USERNAME,
-        .credentials.authentication.password = MQTT_PASSWORD,
+        .broker.address.uri = CONFIG_MQTT_BROKER,
+        .credentials.username = CONFIG_MQTT_USERNAME,
+        .credentials.authentication.password = CONFIG_MQTT_PASSWORD,
     };
+    ESP_LOGI(TAG, "MQTT credentials: %s, %s", mqtt_cfg.credentials.username, mqtt_cfg.credentials.authentication.password);
 
     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
     esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
@@ -77,37 +80,30 @@ void handle_mqtt_data(const char* topic, const char* data, int data_len) {
     // Log the entire message with specified length
     ESP_LOGI(TAG, "Received data on %s: %.*s", topic, data_len, data);
 
-    //if topic is "device/commands" 
-    if(strcmp(topic, MQTT_COMMAND_TOPIC) == 0) {
-        //expecting to get 2 numbers, how many responses to send back and the delay between the responses
-        //parse the data
-        ESP_LOGI(TAG, "Parsing JSON");
+    // If the topic is "device/commands"
+    if(strcmp(topic, CONFIG_MQTT_COMMAND_TOPIC) == 0) {
+        ESP_LOGI(TAG, "Parsing command");
 
+        // Check if the data starts with "measure:"
+        if (strncmp(data, "measure:", 8) == 0) {
+            // Pointer to start of the numbers after "measure:"
+            const char *numbers = data + 8;
 
-        cJSON *root = cJSON_ParseWithLength(data, data_len);
+            // Use sscanf to parse the numbers from the string
+            int num_responses, delay;
+            if (sscanf(numbers, "%d,%d", &num_responses, &delay) == 2) {
+                // Successfully parsed both numbers
+                ESP_LOGI(TAG, "Parsed command measure with num_responses: %d and delay: %d", num_responses, delay);
 
-        if (!root) {
-            ESP_LOGE(TAG, "Error before: [%s]", cJSON_GetErrorPtr());
-            return;
+                // Call function to start the temperature sensor task
+                startTemperatureSensorTask(num_responses, delay);
+            } else {
+                // Parsing error
+                ESP_LOGE(TAG, "Failed to parse command parameters.");
+            }
+        } else {
+            ESP_LOGE(TAG, "Unknown command format.");
         }
-
-        cJSON *num_responses_item = cJSON_GetObjectItem(root, "num_responses");
-        cJSON *delay_item = cJSON_GetObjectItem(root, "delay");
-        if (!num_responses_item || !delay_item) {
-            ESP_LOGE(TAG, "Failed to get required JSON parameters.");
-            cJSON_Delete(root);
-            return;
-        }
-
-        // Using cJSON_GetNumberValue to extract values
-        int num_responses = (int)cJSON_GetNumberValue(num_responses_item);
-        int delay = (int)cJSON_GetNumberValue(delay_item);
-
-        cJSON_Delete(root);
-
-        //make parameters object to be used in the task with the number of responses, the delay and the current time
-        
-        startTemperatureSensorTask(num_responses, delay);
     }
 }
 
