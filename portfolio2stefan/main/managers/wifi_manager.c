@@ -23,7 +23,7 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t e
                 break;
             case WIFI_EVENT_STA_CONNECTED:
                 ESP_LOGI(TAG, "Wi-Fi STA connected.");
-                break;  // Optionally add more actions if needed
+                break;
             default:
                 ESP_LOGW(TAG, "Unhandled Wi-Fi event: %li", event_id);
                 break;
