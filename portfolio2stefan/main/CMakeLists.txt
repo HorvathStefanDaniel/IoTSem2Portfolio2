@@ -1,0 +1,10 @@
+idf_component_register(SRCS 
+                      "app_main.c"
+                      "managers/mqtt_manager.c"
+                      "managers/wifi_manager.c"
+                      "managers/sensor_manager.c"
+                      "tasks/sensor_task.c"
+                    INCLUDE_DIRS 
+                      "."
+                      "managers"
+                      "tasks")
