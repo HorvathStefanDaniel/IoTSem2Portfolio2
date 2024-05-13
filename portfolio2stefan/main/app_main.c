@@ -26,14 +26,14 @@ void app_main(void) {
     ESP_LOGI(TAG, "Application started");
 
     //fast testing
-    for(int i = 0; i < 10; i++) {
-        TaskParameters *params = malloc(sizeof(TaskParameters));
-        params->num_responses = 5;
-        params->delay = 1000;
-        params->current_time = esp_timer_get_time() / 1000;
-        xTaskCreate(temperature_sensor_publish_task, "temperature_sensor_publish_task", 4096, params, 1, NULL);
-        vTaskDelay(4000 / portTICK_PERIOD_MS);
-    }
+    //for(int i = 0; i < 10; i++) {
+    //    TaskParameters *params = malloc(sizeof(TaskParameters));
+    //    params->num_responses = 5;
+    //    params->delay = 1000;
+    //    params->current_time = esp_timer_get_time() / 1000;
+    //   xTaskCreate(temperature_sensor_publish_task, "temperature_sensor_publish_task", 4096, params, 1, NULL);
+    //   vTaskDelay(4000 / portTICK_PERIOD_MS);
+    //}
 
 
 }
