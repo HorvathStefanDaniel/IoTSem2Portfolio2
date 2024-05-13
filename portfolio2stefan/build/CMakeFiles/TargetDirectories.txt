@@ -628,13 +628,6 @@ C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/wifi_provisioning/CMakeF
 C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/wifi_provisioning/CMakeFiles/install.dir
 C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/wifi_provisioning/CMakeFiles/install/local.dir
 C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/wifi_provisioning/CMakeFiles/install/strip.dir
-C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/espressif__led_strip/CMakeFiles/__idf_espressif__led_strip.dir
-C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/espressif__led_strip/CMakeFiles/edit_cache.dir
-C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/espressif__led_strip/CMakeFiles/rebuild_cache.dir
-C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/espressif__led_strip/CMakeFiles/list_install_components.dir
-C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/espressif__led_strip/CMakeFiles/install.dir
-C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/espressif__led_strip/CMakeFiles/install/local.dir
-C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/espressif__led_strip/CMakeFiles/install/strip.dir
 C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/main/CMakeFiles/__idf_main.dir
 C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/main/CMakeFiles/edit_cache.dir
 C:/Dev/IoTSem2Portfolio2/portfolio2stefan/build/esp-idf/main/CMakeFiles/rebuild_cache.dir

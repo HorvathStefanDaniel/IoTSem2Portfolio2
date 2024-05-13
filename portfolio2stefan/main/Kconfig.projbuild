@@ -1,53 +1,44 @@
-menu "Example Configuration"
+menu "Project Configuration"
 
-    orsource "$IDF_PATH/examples/common_components/env_caps/$IDF_TARGET/Kconfig.env_caps"
-
-    choice BLINK_LED
-        prompt "Blink LED type"
-        default BLINK_LED_GPIO if IDF_TARGET_ESP32 || IDF_TARGET_ESP32C2
-        default BLINK_LED_STRIP
+    config WIFI_SSID
+        string "WiFi SSID"
+        default "StefanIOT"
         help
-            Select the LED type. A normal level controlled LED or an addressable LED strip.
-            The default selection is based on the Espressif DevKit boards.
-            You can change the default selection according to your board.
+            The SSID of the WiFi network to connect to.
 
-        config BLINK_LED_GPIO
-            bool "GPIO"
-        config BLINK_LED_STRIP
-            bool "LED strip"
-    endchoice
-
-    choice BLINK_LED_STRIP_BACKEND
-        depends on BLINK_LED_STRIP
-        prompt "LED strip backend peripheral"
-        default BLINK_LED_STRIP_BACKEND_RMT if SOC_RMT_SUPPORTED
-        default BLINK_LED_STRIP_BACKEND_SPI
+    config WIFI_PASSWORD
+        string "WiFi Password"
+        default "stefaniot"
         help
-            Select the backend peripheral to drive the LED strip.
+            The password for the WiFi network.
 
-        config BLINK_LED_STRIP_BACKEND_RMT
-            depends on SOC_RMT_SUPPORTED
-            bool "RMT"
-        config BLINK_LED_STRIP_BACKEND_SPI
-            bool "SPI"
-    endchoice
-
-    config BLINK_GPIO
-        int "Blink GPIO number"
-        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
-        default 5 if IDF_TARGET_ESP32
-        default 18 if IDF_TARGET_ESP32S2
-        default 48 if IDF_TARGET_ESP32S3
-        default 8
+    config MQTT_BROKER
+        string "MQTT Broker URL"
+        default "mqtt://192.168.1.93"
         help
-            GPIO number (IOxx) to blink on and off the LED.
-            Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to blink.
+            The URL of the MQTT broker to connect to (without authentication).
 
-    config BLINK_PERIOD
-        int "Blink period in ms"
-        range 10 3600000
-        default 1000
+    config MQTT_COMMAND_TOPIC
+        string "MQTT Command Topic"
+        default "device/commands"
         help
-            Define the blinking period in milliseconds.
+            The MQTT topic to subscribe to for receiving commands.
 
+    config MQTT_RESPONSE_TOPIC
+        string "MQTT Response Topic"
+        default "temperature/publish"
+        help
+            The MQTT topic to publish responses to.
+
+    config MQTT_USERNAME
+        string "MQTT Username"
+        default "com.dl.mqtt"
+        help
+            The MQTT username. If no authentication is used this can be ignored.
+
+    config MQTT_PASSWORD
+        string "MQTT Password"
+        default "avd85hfk"
+        help
+            The MQTT password. If no authentication is used this can be ignored.
 endmenu
