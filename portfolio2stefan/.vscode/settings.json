@@ -16,7 +16,11 @@
     "idf.pythonBinPathWin": "C:/Espressif/python_env/idf5.2_py3.11_env/Scripts/python.exe",
     "idf.toolsPathWin": "C:\\Espressif",
     "files.associations": {
-        "sensor_task.h": "c"
+        "sensor_task.h": "c",
+        "mqtt_manager.h": "c",
+        "cstdlib": "c",
+        "semphr.h": "c",
+        "freertos.h": "c"
     },
     "idf.flashType": "UART"
 }

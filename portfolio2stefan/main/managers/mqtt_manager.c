@@ -106,19 +106,31 @@ void handle_mqtt_data(const char* topic, const char* data, int data_len) {
         cJSON_Delete(root);
 
         //make parameters object to be used in the task with the number of responses, the delay and the current time
-        TaskParameters *parameters = malloc(sizeof(TaskParameters));
-        if (parameters) {
-            parameters->num_responses = num_responses;
-            parameters->delay = delay;
-            parameters->current_time = esp_timer_get_time() / 1000;
-
-            if (xTaskCreate(temperature_sensor_publish_task, "temperature_sensor_publish_task", 4096, parameters, 5, NULL) != pdPASS) {
-                ESP_LOGE(TAG, "Failed to start task");
-                free(parameters); // Free memory if task fails to start
-            }
-        } else {
-            ESP_LOGE(TAG, "Failed to allocate memory for task parameters");
-        }
-
+        
+        startTemperatureSensorTask(num_responses, delay);
     }
+}
+
+void startTemperatureSensorTask(int num_responses, int delay)
+{
+    ESP_LOGI(TAG, "Starting temperature sensor task");
+
+    TaskParameters *parameters = malloc(sizeof(TaskParameters));
+    if (parameters)
+    {
+        parameters->num_responses = num_responses;
+        parameters->delay = delay;
+        parameters->current_time = esp_timer_get_time() / 1000;
+
+        if (xTaskCreate(temperature_sensor_publish_task, "temperature_sensor_publish_task", 4096, parameters, 5, NULL) != pdPASS)
+        {
+            ESP_LOGE(TAG, "Failed to start task");
+            free(parameters); // Free memory if task fails to start
+        }
+    }
+    else
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for task parameters");
+    }
+
 }

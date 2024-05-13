@@ -5,7 +5,7 @@
 #define WIFI_PASSWORD "stefaniot"
 
 // MQTT server configuration
-#define MQTT_BROKER "mqtt://10.126.50.109"
+#define MQTT_BROKER "mqtt://192.168.1.93"
 #define MQTT_PORT 1883
 #define MQTT_USERNAME "com.dl.mqtt"  // replace this with secret
 #define MQTT_PASSWORD "avd85hfk"     // replace this with secret or set from a secure source oops

@@ -6,12 +6,37 @@
 #include "../config.h"
 #include "esp_timer.h"
 #include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
+
+
+SemaphoreHandle_t temperature_task_semaphore = NULL;
+
+void innitialise_semaphore()
+{
+    temperature_task_semaphore = xSemaphoreCreateBinary();
+    xSemaphoreGive(temperature_task_semaphore);
+}
+
+bool is_semaphore_taken()
+{
+    return xSemaphoreTake(temperature_task_semaphore, 0);
+}
 
 //for logging
 static const char *TAG = "sensor_task";
 
 //expecting parameters to be the number of times the loop should run and the delay between each loop
 void temperature_sensor_publish_task(void *pvParameters) {
+    if(!is_semaphore_taken())
+    {
+        ESP_LOGE(TAG, "Semaphore is taken, cannot run task");
+        free(pvParameters);
+        vTaskDelete(NULL);
+        return;
+    }
+
+    
     ESP_LOGI(TAG, "Starting temperature sensor task");
     const char *topic = MQTT_RESPONSE_TOPIC;
     
@@ -23,7 +48,7 @@ void temperature_sensor_publish_task(void *pvParameters) {
     int delay = parameters->delay;
 
     while (loop_count > 0) {
-        //delay is before the reading according to the documentation
+        //delay is before the reading according to the reqs
         vTaskDelay(pdMS_TO_TICKS(delay));
 
         uint32_t current_time = esp_timer_get_time() / 1000;
@@ -52,5 +77,6 @@ void temperature_sensor_publish_task(void *pvParameters) {
     
     // Clean up parameter struct and self-delete the task
     free(parameters);
+    xSemaphoreGive(temperature_task_semaphore);
     vTaskDelete(NULL); // Pass NULL to delete the calling task
 }
